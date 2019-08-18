@@ -1,2 +1,8 @@
 # intellig-server
-基于springboot的脚手架项目，继承了mybatis自动生成、maven多环境配置、log4j2多环境、assembly生成发布包
+基于springboot的web服务脚手架
+
+# 内容列表
+### 1.使用mybatis generator自动生成mapper
+### 2.基于maven的profile支持多环境切换
+### 3.接入log4j2,支持多环境胚子
+### 4.采用assembly打包插件，生成最终发布包
