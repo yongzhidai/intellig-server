@@ -1,0 +1,17 @@
+server:
+  port: 8088
+  tomcat:
+    max-swallow-size:
+
+
+spring:
+    profiles:
+      active: @app.env@
+    mvc:
+      static-path-pattern: /static/**
+
+mybatis:
+  mapper-locations: classpath*:com/dyz/intellig/service/intelligserver/dao/**/*Mapper.xml
+
+logging:
+  config: classpath:log4j2/log4j2-@app.env@.xml
