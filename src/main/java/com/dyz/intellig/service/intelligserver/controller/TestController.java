@@ -1,6 +1,5 @@
 package com.dyz.intellig.service.intelligserver.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.dyz.intellig.service.intelligserver.dao.test.DispatchCarrierPO;
 import com.dyz.intellig.service.intelligserver.service.SimulationService;
 import org.slf4j.Logger;
@@ -25,10 +24,10 @@ public class TestController {
     private String env;
 
     @RequestMapping("/test.do")
-    public String test(String name){
+    public Object test(String name){
         LOGGER.info(name +"---"+env);
         List<DispatchCarrierPO> list = simulationService.getAll();
-        return JSON.toJSONString(list);
+        return list;
     }
 
     @RequestMapping("/info.do")

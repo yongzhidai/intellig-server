@@ -7,8 +7,6 @@ server:
 spring:
     profiles:
       active: @app.env@
-    mvc:
-      static-path-pattern: /static/**
 
 mybatis:
   mapper-locations: classpath*:com/dyz/intellig/service/intelligserver/dao/**/*Mapper.xml

@@ -115,6 +115,7 @@
     </profiles>
 
 	<build>
+        <finalName>intellig-server</finalName>
         <resources>
             <resource>
                 <directory>${basedir}/src/main/java</directory>
@@ -130,6 +131,15 @@
                     <include>**/application-${app.env}.yml</include>
                     <include>**/log4j2/log4j2-${app.env}.xml</include>
                 </includes>
+            </resource>
+            <resource>
+                <filtering>false</filtering>
+                <directory>${basedir}/src/main/resources</directory>
+                <excludes>
+                    <exclude>**/application.yml</exclude>
+                    <exclude>**/application-${app.env}.yml</exclude>
+                    <exclude>**/log4j2/log4j2-${app.env}.xml</exclude>
+                </excludes>
             </resource>
         </resources>
 		<plugins>
