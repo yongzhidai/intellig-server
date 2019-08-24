@@ -21,6 +21,7 @@
 
 	<properties>
 		<java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<dependencies>
@@ -115,7 +116,7 @@
     </profiles>
 
 	<build>
-        <finalName>intellig-server</finalName>
+        <finalName>${project.artifactId}-${current.time}</finalName>
         <resources>
             <resource>
                 <directory>${basedir}/src/main/java</directory>
@@ -143,11 +144,28 @@
             </resource>
         </resources>
 		<plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.9.1</version>
+                <executions>
+                    <execution>
+                        <id>timestamp-property</id>
+                        <goals>
+                            <goal>timestamp-property</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <name>current.time</name>
+                    <pattern>yyyyMMdd-HH_mm</pattern>
+                    <timeZone>GMT+8</timeZone>
+                </configuration>
+            </plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.0.0</version>

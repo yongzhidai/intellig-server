@@ -2,7 +2,7 @@
 <configuration status="WARN">
 
     <appenders>
-        <RollingFile name="RollingFileInfo" fileName="${sys:user.home}/logs/info.log"
+        <RollingFile name="RollingFileInfo" fileName="${sys:app.log.dir}/logs/${app.name}.info.log"
                             filePattern="${sys:user.home}/logs/info-%d{yyyy-MM-dd}-%i.log">
             <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
             <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
@@ -12,7 +12,7 @@
             </Policies>
         </RollingFile>
 
-        <RollingFile name="RollingFileWarn" fileName="${sys:user.home}/logs/warn.log"
+        <RollingFile name="RollingFileWarn" fileName="${sys:app.log.dir}/logs/${app.name}.warn.log"
                      filePattern="${sys:user.home}/logs/warn-%d{yyyy-MM-dd}-%i.log">
             <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
             <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
@@ -22,7 +22,7 @@
             </Policies>
         </RollingFile>
 
-        <RollingFile name="RollingFileError" fileName="${sys:user.home}/logs/error.log"
+        <RollingFile name="RollingFileError" fileName="${sys:app.log.dir}/logs/${app.name}.error.log"
                      filePattern="${sys:user.home}/logs/error-%d{yyyy-MM-dd}-%i.log">
             <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
             <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>

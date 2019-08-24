@@ -10,6 +10,11 @@
             <fileMode>0755</fileMode>
         </fileSet>
         <fileSet>
+            <directory>assembly/config/base</directory>
+            <outputDirectory>config</outputDirectory>
+            <fileMode>0644</fileMode>
+        </fileSet>
+        <fileSet>
             <directory>assembly/config/${app.env}</directory>
             <outputDirectory>config</outputDirectory>
             <fileMode>0644</fileMode>

@@ -1,86 +1,47 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-SERVER_NAME='spring-vue'
-JAR_NAME='springboot-vue.jar'
-cd `dirname $0`
-BIN_DIR=`pwd`
-cd ..
-DEPLOY_DIR=`pwd`
-CONF_DIR=$DEPLOY_DIR/config
-# SERVER_PORT=`sed '/server.port/!d;s/.*=//' config/application.properties | tr -d '\r'`
-SERVER_PORT=`sed -nr '/port: [0-9]+/ s/.*port: +([0-9]+).*/\1/p' config/application.yml`
+# 变量设置
+function init_variables(){
+    echo "Configuring paths & variables:"
+    JAVA_CMD=${JAVA_HOME}"/bin/java"
+    EXEC_CMD="exec"
+    WORK_DIR=`cd $(dirname $0);cd ../;pwd`
+    LOG_PATH=${WORK_DIR}"/logs"
+    APP_NAME="intellig-server"
 
-PIDS=`ps -f | grep java | grep "$CONF_DIR" |awk '{print $2}'`
-if [ "$1" = "status" ]; then	  
-    if [ -n "$PIDS" ]; then
-        echo "The $SERVER_NAME is running...!"
-        echo "PID: $PIDS"
-        exit 0
-    else
-        echo "The $SERVER_NAME is stopped"
-        exit 0
-    fi
-fi
+    # debug info
+    echo "JAVA_CMD=$JAVA_CMD"
+    echo "EXEC_CMD=$EXEC_CMD"
+    echo "WORK_DIR=$WORK_DIR"
+    echo "LOG_PATH=$LOG_PATH"
+}
 
-if [ -n "$PIDS" ]; then
-    echo "ERROR: The $SERVER_NAME already started!"
-    echo "PID: $PIDS"
-    exit 1
-fi
-
-if [ -n "$SERVER_PORT" ]; then
-    SERVER_PORT_COUNT=`netstat -tln | grep $SERVER_PORT | wc -l`
-    if [ $SERVER_PORT_COUNT -gt 0 ]; then
-        echo "ERROR: The $SERVER_NAME port $SERVER_PORT already used!"
-        exit 1
-    fi
-fi
-
-LOGS_DIR=$DEPLOY_DIR/logs
-if [ ! -d $LOGS_DIR ]; then
-    mkdir $LOGS_DIR
-fi
-STDOUT_FILE=$LOGS_DIR/stdout.log
-
-JAVA_OPTS=" -Djava.awt.headless=true -Djava.net.preferIPv4Stack=true "
-JAVA_DEBUG_OPTS=""
-if [ "$1" = "debug" ]; then
-    JAVA_DEBUG_OPTS=" -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n "
-fi
-
-JAVA_JMX_OPTS=""
-if [ "$1" = "jmx" ]; then
-    JAVA_JMX_OPTS=" -Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false "
-fi
-
-JAVA_MEM_OPTS=""
-BITS=`java -version 2>&1 | grep -i 64-bit`
-if [ -n "$BITS" ]; then
-    JAVA_MEM_OPTS=" -server -Xmx512m -Xms512m -Xmn256m -XX:PermSize=128m -Xss256k -XX:+DisableExplicitGC -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -XX:+UseCMSCompactAtFullCollection -XX:LargePageSizeInBytes=128m -XX:+UseFastAccessorMethods -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=70 "
-else
-    JAVA_MEM_OPTS=" -server -Xms512m -Xmx512m -XX:PermSize=128m -XX:SurvivorRatio=2 -XX:+UseParallelGC "
-fi
-
-CONFIG_FILES=" -Dlogging.path=$LOGS_DIR -Dlogging.config=$CONF_DIR/log4j2.xml -Dspring.config.location=$CONF_DIR/application.properties "
-echo -e "Starting the $SERVER_NAME ..."
-nohup java $JAVA_OPTS $JAVA_MEM_OPTS $JAVA_DEBUG_OPTS $JAVA_JMX_OPTS $CONFIG_FILES -jar $DEPLOY_DIR/lib/$JAR_NAME > $STDOUT_FILE 2>&1 &
-
-COUNT=0
-while [ $COUNT -lt 1 ]; do
-    echo -e ".\c"
-    sleep 1
-    if [ -n "$SERVER_PORT" ]; then
-        COUNT=`netstat -an | grep $SERVER_PORT | wc -l`
-    else
-    	COUNT=`ps -f | grep java | grep "$DEPLOY_DIR" | awk '{print $2}' | wc -l`
-    fi
-    if [ $COUNT -gt 0 ]; then
-        break
-    fi
-done
+# 环境准备
+function prepare_env(){
+    echo "Preparing environment:"
+    # confirm log path
+    echo "Confirming log path: $LOG_PATH"
+    mkdir -p ${LOG_PATH}
 
 
-echo "OK!"
-PIDS=`ps -f | grep java | grep "$DEPLOY_DIR" | awk '{print $2}'`
-echo "PID: $PIDS"
-echo "STDOUT: $STDOUT_FILE"
+    # load jvm args
+    echo "Loading boot.ini from ${WORK_DIR}/config"
+    source ${WORK_DIR}/config/boot.ini
+    source ${WORK_DIR}/config/boot-env.ini
+}
+
+# 启动进程
+function launch_process(){
+    echo "Launching java process:"
+    JVM_PARAMS="$JVM_BASE $JVM_GC_TYPE $JVM_GC_LOG_CONTENT $JVM_GC_LOG_FILE $JVM_HEAP $JVM_SIZE $JVM_DEBUG"
+    LOG_PARAMS="-Xloggc:$LOG_PATH/$APP_NAME.gc.log -XX:ErrorFile=$LOG_PATH/$APP_NAME.hs_err_%p.log -XX:HeapDumpPath=$LOG_PATH/$APP_NAME.heap_err_%p.hprof"
+    APP_PARAMS="-Dapp.log.dir=$LOG_PATH -Dapp.name=$APP_NAME"
+    FINAL_CMD="$EXEC_CMD $JAVA_CMD $JVM_PARAMS $LOG_PARAMS $APP_PARAMS"
+    echo "Executing launch command: ${FINAL_CMD}"
+    ${FINAL_CMD} -jar ${WORK_DIR}/lib/*.jar 2>&1
+}
+
+# do real actions
+init_variables
+prepare_env
+launch_process

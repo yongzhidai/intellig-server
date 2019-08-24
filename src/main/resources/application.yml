@@ -1,7 +1,6 @@
 server:
-  port: 8088
-  tomcat:
-    max-swallow-size:
+  port: 80
+
 
 
 spring:
