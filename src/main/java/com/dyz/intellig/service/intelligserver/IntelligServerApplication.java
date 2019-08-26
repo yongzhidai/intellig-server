@@ -31,7 +31,7 @@ public class IntelligServerApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		LOGGER.info(".........netty server starting......");
 		nettyServer.start(port);
-		LOGGER.info(".........netty server started and with prot:{}......",port);
+		LOGGER.info(".........netty server started and with port:{} ......",port);
 		Runtime.getRuntime().addShutdownHook(new Thread(){
 			@Override
 			public void run() {

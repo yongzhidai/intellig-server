@@ -31,7 +31,7 @@ public class NettyServer {
                     public void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline().addLast("frameDecoder",new LengthFieldBasedFrameDecoder(65536, 0, 2, 0, 2));
                         ch.pipeline().addLast("frameEncoder",new LengthFieldPrepender(2));
-                        ch.pipeline().addLast(new ServerHandler());
+                        ch.pipeline().addLast("serverHandler",new ServerHandler());
                     }
                 })
                 .option(ChannelOption.SO_BACKLOG, 1024)
