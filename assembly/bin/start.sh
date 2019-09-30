@@ -35,7 +35,7 @@ function launch_process(){
     echo "Launching java process:"
     JVM_PARAMS="$JVM_BASE $JVM_GC_TYPE $JVM_GC_LOG_CONTENT $JVM_GC_LOG_FILE $JVM_HEAP $JVM_SIZE $JVM_DEBUG"
     LOG_PARAMS="-Xloggc:$LOG_PATH/$APP_NAME.gc.log -XX:ErrorFile=$LOG_PATH/$APP_NAME.hs_err_%p.log -XX:HeapDumpPath=$LOG_PATH/$APP_NAME.heap_err_%p.hprof"
-    APP_PARAMS="-Dapp.log.dir=$LOG_PATH -Dapp.name=$APP_NAME"
+    APP_PARAMS="-Dapp.log.dir=$LOG_PATH -Dapp.name=$APP_NAME -Duser.dir=$WORK_DIR"
     FINAL_CMD="$EXEC_CMD $JAVA_CMD $JVM_PARAMS $LOG_PARAMS $APP_PARAMS"
     echo "Executing launch command: ${FINAL_CMD}"
     ${FINAL_CMD} -jar ${WORK_DIR}/lib/*.jar 2>&1

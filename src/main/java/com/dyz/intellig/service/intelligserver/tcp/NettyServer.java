@@ -11,6 +11,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
+import io.netty.util.concurrent.DefaultEventExecutorGroup;
+import io.netty.util.concurrent.DefaultThreadFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Component;
 public class NettyServer {
     private EventLoopGroup bossGroup = new NioEventLoopGroup();
     private EventLoopGroup workerGroup = new NioEventLoopGroup();
+    private DefaultEventExecutorGroup bizGroup = new DefaultEventExecutorGroup(100,new DefaultThreadFactory("SERVER_BIZ_Thread"));
     private ChannelFuture channelFuture;
 
     public void start(int port) throws Exception{
@@ -29,7 +32,7 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     public void initChannel(SocketChannel ch) throws Exception {
-                        ch.pipeline().addLast("frameDecoder",new LengthFieldBasedFrameDecoder(65536, 0, 2, 0, 2));
+                        ch.pipeline().addLast(bizGroup,"frameDecoder",new LengthFieldBasedFrameDecoder(65536, 0, 2, 0, 2));
                         ch.pipeline().addLast("frameEncoder",new LengthFieldPrepender(2));
                         ch.pipeline().addLast("serverHandler",new ServerHandler());
                     }

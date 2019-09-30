@@ -31,6 +31,8 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
             }
             buf.writeBytes(tmp);
             ctx.writeAndFlush(buf);
+            ctx.channel().alloc().buffer(123);
+            ctx.channel().writeAndFlush(buf);
         } finally {
             ReferenceCountUtil.release(m);
         }
