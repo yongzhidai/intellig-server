@@ -20,10 +20,10 @@
             <fileMode>0644</fileMode>
         </fileSet>
         <fileSet>
-            <directory>assembly/config</directory>
+            <directory>config</directory>
             <outputDirectory>config</outputDirectory>
             <includes>
-                <include>*.properties</include>
+                <include>config.properties</include>
             </includes>
             <fileMode>0644</fileMode>
         </fileSet>
