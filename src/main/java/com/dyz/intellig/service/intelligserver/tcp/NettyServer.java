@@ -1,5 +1,7 @@
 package com.dyz.intellig.service.intelligserver.tcp;
 
+import com.dyz.intellig.service.intelligserver.tcp.codec.MessageDecoder;
+import com.dyz.intellig.service.intelligserver.tcp.codec.MessageEncoder;
 import com.dyz.intellig.service.intelligserver.tcp.handler.ServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -11,6 +13,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
+import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import org.springframework.stereotype.Component;
@@ -34,6 +37,9 @@ public class NettyServer {
                     public void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline().addLast(bizGroup,"frameDecoder",new LengthFieldBasedFrameDecoder(65536, 0, 2, 0, 2));
                         ch.pipeline().addLast("frameEncoder",new LengthFieldPrepender(2));
+                        ch.pipeline().addLast("msDecoder",new MessageDecoder());
+                        ch.pipeline().addLast("msgEncoder",new MessageEncoder());
+                        ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(60, 0, 0));
                         ch.pipeline().addLast("serverHandler",new ServerHandler());
                     }
                 })
