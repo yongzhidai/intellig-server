@@ -7,13 +7,13 @@ import java.io.IOException;
 /**
  * Created by daiyongzhi on 2019/10/14.
  */
-public class ServerResponse {
+public class OutMsg {
 
 
     private ByteArrayOutputStream bros;
     private DataOutputStream dos;
 
-    public ServerResponse(int msgCode) throws IOException {
+    public OutMsg(int msgCode) throws IOException {
 
         bros = new ByteArrayOutputStream();
         dos = new DataOutputStream(bros);

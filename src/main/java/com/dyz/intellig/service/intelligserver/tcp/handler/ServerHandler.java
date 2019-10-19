@@ -1,7 +1,7 @@
 package com.dyz.intellig.service.intelligserver.tcp.handler;
 
 import com.dyz.intellig.service.intelligserver.tcp.msg.dispatcher.MsgDispatcher;
-import com.dyz.intellig.service.intelligserver.tcp.msg.transfer.ClientRequest;
+import com.dyz.intellig.service.intelligserver.tcp.msg.transfer.InMsg;
 import com.dyz.intellig.service.intelligserver.tcp.session.DeviceSession;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -21,7 +21,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        ClientRequest request = (ClientRequest) msg;
+        InMsg request = (InMsg) msg;
 
         DeviceSession deviceSession = DeviceSession.getInstance(ctx.channel());
         if(deviceSession == null){

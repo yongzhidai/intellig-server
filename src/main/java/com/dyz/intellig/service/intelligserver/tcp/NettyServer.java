@@ -39,7 +39,7 @@ public class NettyServer {
                         ch.pipeline().addLast("frameEncoder",new LengthFieldPrepender(2));
                         ch.pipeline().addLast("msDecoder",new MessageDecoder());
                         ch.pipeline().addLast("msgEncoder",new MessageEncoder());
-                        ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(60, 0, 0));
+                        ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(180, 0, 0));
                         ch.pipeline().addLast("serverHandler",new ServerHandler());
                     }
                 })

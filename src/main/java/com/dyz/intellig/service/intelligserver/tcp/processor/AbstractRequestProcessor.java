@@ -1,6 +1,6 @@
 package com.dyz.intellig.service.intelligserver.tcp.processor;
 
-import com.dyz.intellig.service.intelligserver.tcp.msg.transfer.ClientRequest;
+import com.dyz.intellig.service.intelligserver.tcp.msg.transfer.InMsg;
 import com.dyz.intellig.service.intelligserver.tcp.session.DeviceSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,7 @@ public abstract class AbstractRequestProcessor {
 
     private static final Logger logger = LoggerFactory.getLogger(RequestProcessor.class);
 
-    public void handle(DeviceSession deviceSession, ClientRequest request){
+    public void handle(DeviceSession deviceSession, InMsg request){
         try {
             process(deviceSession,request);
         } catch (Exception e) {
@@ -21,5 +21,5 @@ public abstract class AbstractRequestProcessor {
         }
     }
 
-    protected abstract void process(DeviceSession deviceSession,ClientRequest request)throws Exception;
+    protected abstract void process(DeviceSession deviceSession,InMsg request)throws Exception;
 }

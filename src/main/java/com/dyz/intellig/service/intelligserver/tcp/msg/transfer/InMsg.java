@@ -7,11 +7,11 @@ import java.io.IOException;
 /**
  * Created by daiyongzhi on 2019/10/14.
  */
-public class ClientRequest {
+public class InMsg {
     private int msgCode;
     private DataInputStream dis;
 
-    public ClientRequest(byte[] bytes, int offset, int length) throws IOException {
+    public InMsg(byte[] bytes, int offset, int length) throws IOException {
         dis = new DataInputStream(new ByteArrayInputStream(bytes,offset,length));
         this.msgCode = dis.readInt();
     }

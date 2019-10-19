@@ -1,7 +1,7 @@
 package com.dyz.intellig.service.intelligserver.tcp.msg.dispatcher;
 
 import com.dyz.intellig.service.intelligserver.common.annotation.RequestProcessor;
-import com.dyz.intellig.service.intelligserver.tcp.msg.transfer.ClientRequest;
+import com.dyz.intellig.service.intelligserver.tcp.msg.transfer.InMsg;
 import com.dyz.intellig.service.intelligserver.tcp.processor.AbstractRequestProcessor;
 import com.dyz.intellig.service.intelligserver.tcp.processor.INotNeedLoginProcessor;
 import com.dyz.intellig.service.intelligserver.tcp.session.DeviceSession;
@@ -38,7 +38,7 @@ public class MsgDispatcher implements BeanPostProcessor{
         return bean;
     }
 
-    public static void dispatchMsg(DeviceSession deviceSession, ClientRequest request){
+    public static void dispatchMsg(DeviceSession deviceSession, InMsg request){
         int msgCode = request.getMsgCode();
         if(msgCode == 0){
             deviceSession.close();

@@ -1,6 +1,6 @@
 package com.dyz.intellig.service.intelligserver.tcp.codec;
 
-import com.dyz.intellig.service.intelligserver.tcp.msg.transfer.ClientRequest;
+import com.dyz.intellig.service.intelligserver.tcp.msg.transfer.InMsg;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.channel.ChannelHandlerContext;
@@ -32,6 +32,6 @@ public class MessageDecoder extends MessageToMessageDecoder<ByteBuf> {
             offset = 0;
         }
 
-        out.add(new ClientRequest(array,offset,length));
+        out.add(new InMsg(array,offset,length));
     }
 }

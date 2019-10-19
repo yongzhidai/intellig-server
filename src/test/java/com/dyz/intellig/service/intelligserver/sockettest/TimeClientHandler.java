@@ -1,7 +1,7 @@
-package com.dyz.intellig.service.intelligserver;
+package com.dyz.intellig.service.intelligserver.sockettest;
 
-import com.dyz.intellig.service.intelligserver.tcp.msg.transfer.ClientRequest;
-import com.dyz.intellig.service.intelligserver.tcp.msg.transfer.ServerResponse;
+import com.dyz.intellig.service.intelligserver.tcp.msg.transfer.InMsg;
+import com.dyz.intellig.service.intelligserver.tcp.msg.transfer.OutMsg;
 import com.dyz.intellig.service.intelligserver.tcp.session.DeviceSession;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -23,7 +23,7 @@ public class TimeClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         try {
-            ClientRequest request = (ClientRequest) msg;
+            InMsg request = (InMsg) msg;
             if(request.getMsgCode() == 2){
             }else if(request.getMsgCode() == 1002){
                 System.out.println("收到登录响应:"+ request.readUTF());
@@ -46,7 +46,7 @@ public class TimeClientHandler extends ChannelInboundHandlerAdapter {
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {
             DeviceSession deviceSession = DeviceSession.getInstance(ctx.channel());
-            deviceSession.sendMsg(new ServerResponse(1));
+            deviceSession.sendMsg(new OutMsg(1));
         }
     }
 }

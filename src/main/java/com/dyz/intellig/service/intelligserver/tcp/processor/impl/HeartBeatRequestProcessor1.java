@@ -1,8 +1,8 @@
 package com.dyz.intellig.service.intelligserver.tcp.processor.impl;
 
 import com.dyz.intellig.service.intelligserver.common.annotation.RequestProcessor;
-import com.dyz.intellig.service.intelligserver.tcp.msg.transfer.ClientRequest;
-import com.dyz.intellig.service.intelligserver.tcp.msg.transfer.ServerResponse;
+import com.dyz.intellig.service.intelligserver.tcp.msg.transfer.InMsg;
+import com.dyz.intellig.service.intelligserver.tcp.msg.transfer.OutMsg;
 import com.dyz.intellig.service.intelligserver.tcp.processor.AbstractRequestProcessor;
 import com.dyz.intellig.service.intelligserver.tcp.processor.INotNeedLoginProcessor;
 import com.dyz.intellig.service.intelligserver.tcp.session.DeviceSession;
@@ -18,8 +18,8 @@ public class HeartBeatRequestProcessor1 extends AbstractRequestProcessor impleme
     private static final Logger LOGGER = LoggerFactory.getLogger(HeartBeatRequestProcessor1.class);
 
     @Override
-    public void process(DeviceSession deviceSession, ClientRequest request) throws Exception {
+    public void process(DeviceSession deviceSession, InMsg request) throws Exception {
         LOGGER.info("rcv: 心跳");
-        deviceSession.sendMsg(new ServerResponse(2));
+        deviceSession.sendMsg(new OutMsg(2));
     }
 }

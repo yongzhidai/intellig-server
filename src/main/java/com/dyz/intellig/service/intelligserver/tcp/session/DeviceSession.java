@@ -1,7 +1,7 @@
 package com.dyz.intellig.service.intelligserver.tcp.session;
 
 
-import com.dyz.intellig.service.intelligserver.tcp.msg.transfer.ServerResponse;
+import com.dyz.intellig.service.intelligserver.tcp.msg.transfer.OutMsg;
 import io.netty.channel.Channel;
 import io.netty.util.Attribute;
 import io.netty.util.AttributeKey;
@@ -33,7 +33,7 @@ public class DeviceSession {
         return true;
     }
 
-    public void sendMsg(ServerResponse response){
+    public void sendMsg(OutMsg response){
         if(response == null || channel == null || !channel.isActive()){
             return;
         }
